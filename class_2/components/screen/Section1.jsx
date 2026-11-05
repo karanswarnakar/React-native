@@ -1,41 +1,58 @@
 
-import { Text, TextInput, View, StyleSheet } from 'react-native'
+import { Text, TextInput, View, StyleSheet, Modal,Alert } from 'react-native'
 import ButtonCustome from '../ButtonCustome'
 import InputCustome from '../InputCustome'
 import { useState } from 'react'
+import Message from '../Message'
 
-function Section1() {
+function Section1(props) {
     const [inputText, setInputText] = useState("")
+//      const showAlert = () => {
+//     Alert.alert(
+//       'Alert Title', // 1. Title
+//       'This is the body message of the alert box.', // 2. Message
+//     );
+//   };
+  
+  showAlert()
+  console.log(showAlert);
     return (
-        <View style={styles.section1}>
-            <Text style={styles.title}>Guess the number</Text>
+        <>
+            {/* Number Pic */}
+            <Modal visible={props.start} animationType='fade'>
+                <View style={styles.section1}>
+                <Text style={styles.title}>Guess the number</Text>
 
-            <View style={styles.box}>
+                <View style={styles.box}>
 
-            <Text style={styles.sub_title}>Enter a number</Text>
-                <InputCustome
-                    setInputText={setInputText}
-                    value={inputText}
-                />
-                <View style={styles.btn_container}>
-                    <ButtonCustome
-                        onPress={() => {
-                            console.log("RESET")
-                            setInputText("")
-                        }}
-                        title='Reset'
+                <Text style={styles.sub_title}>Enter a number</Text>
+                    <InputCustome
+                        setInputText={setInputText}
+                        value={inputText}
                     />
-                    <ButtonCustome
-                        onPress={() => {
-                            console.log("CONFIRM", inputText)
-                        }}
-                        title='Confirm'
-                    />
+                    <View style={styles.btn_container}>
+                        <ButtonCustome
+                            onPress={() => {
+                                console.log("RESET")
+                                setInputText("")
+                            }}
+                            title='Reset'
+                        />
+                        <ButtonCustome
+                            onPress={() => {
+                                console.log("CONFIRM", inputText)
+                                
+                            }}
+                            title='Confirm'
+                        />
+                    </View>
+
                 </View>
 
             </View>
-
-        </View>
+            </Modal>
+             <Message text={"Hello!! Welcome..."}/>               
+        </>
     )
 }
 

@@ -24,8 +24,6 @@ export default InputCustome
 
 const styles = StyleSheet.create({
     input: {
-        // width:"100%",
-        // backgroundColor:"red",
         padding: 10,
         fontSize: 50,
         borderBottomColor: "#1e1d1d",
