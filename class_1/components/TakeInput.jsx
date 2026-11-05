@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, Text, View, StyleSheet, Pressable, Modal } from 'react-native'
+import { TextInput, Text, View, StyleSheet, Pressable, Modal, Image } from 'react-native'
 
 function TakeInput(props) {
   const [inputText, setInputText] = useState("")
@@ -16,6 +16,9 @@ function TakeInput(props) {
   return (
     <Modal visible={props.visiable} animationType='slide'>
       <View style={styles.inputConteiner}>
+          <View style={styles.image_con}>
+            <Image style={styles.image} source={require("../assets/images/goal.png")}/>
+          </View>
         <View style={styles.internalSection}>
           <TextInput
             style={styles.inputArea}
@@ -53,7 +56,7 @@ function TakeInput(props) {
 const styles = StyleSheet.create({
   inputConteiner: {
     flex: 1,
-    backgroundColor: "#f1efef",
+    backgroundColor: "#3409a8",
     justifyContent: "center",
     flexDirection: "column",
     paddingHorizontal: 40,
@@ -74,7 +77,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
 
   },
+  image_con:{
+    alignItems:"center",
+    marginBottom:10
+  },
+  image:{
+    height: 100,
+    width:100,
 
+  },
   btn_con: {
     flex:1,
     // backgroundColor: "red"
