@@ -3,50 +3,82 @@ import {
   StyleSheet,
   FlatList,
   Text,
-  TextInput,
   View,
-  Button
+  Button,
+  Pressable
 } from 'react-native';
 import TaskItem from './components/TaskItem.jsx';
 import TakeInput from './components/TakeInput.jsx';
 
 export default function App() {
-  const [inputText, setInputText] = useState("")
+
   const [listTask, setListTask] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
+  function openModal() {
+    setIsModalOpen(true)
 
-  function inputHandeler(text) {
-    setInputText(text)
   }
+
+  function addEllement() {
+    if(!isModalOpen){
+      return "Empty all task first."
+    }else{
+      setListTask([
+        { item: "Learn React", id: "1" },
+        { item: "Learn JavaScript", id: "2" },
+        { item: "Practice CSS", id: "3" },
+        { item: "Build a Project", id: "4" },
+        { item: "Learn Node.js", id: "5" },
+        { item: "Practice MongoDB", id: "6" },
+        { item: "Learn Express.js", id: "7" },
+        { item: "Explore React Native", id: "8" },
+        { item: "Complete Udemy Course", id: "9" },
+        { item: "Upload Project to GitHub", id: "10" }
+      ]);
+    }
+  }
+
+
 
   function addTaskHandeler(e) {
 
-
-
-    setListTask(prv => [...prv, { item: e, id: Math.floor(Math.random()).toString() }])
-    setInputText(" ")
+    setListTask(prv => [...prv, { item: e, id: Math.random().toString() }])
   }
+  function deleteTaskHandeler(id) {
+    setListTask(pre => {
+      return pre.filter((item) => item.id !== id)
+    })
 
+  }
 
   return (
 
     <View style={styles.appContainer}>
-      <View style={styles.internalSection}>
-        <TakeInput
-          placeholder='Enter your task..'
-          onChangeText={inputHandeler}
-          value={inputText}
-        />
-        <Button title='Add task' onPress={() => {
-          addTaskHandeler(inputText)
-        }} />
-      </View>
+      {/* <Button title='Add Task' onPress={openModal} color={"#5900ff"} /> */}
+
+      <Pressable
+        onPress={addTaskHandeler}
+        style={styles.btn_con}
+      >
+        <Text onPress={openModal} style={styles.btn} >Add Task</Text>
+      </Pressable>
+
+      <Text>.</Text>
+      <TakeInput onAddTask={addTaskHandeler} visiable={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      
+      <Pressable
+        style={styles.btn_con}
+      >
+        <Text onPress={addEllement}style={[styles.btn, styles.demobtn]} >Demo</Text>
+      </Pressable>
+      
       <View style={styles.listConteiner}>
         <Text style={styles.heddingSmall}>List of tasks</Text>
         <FlatList
           data={listTask}
           renderItem={(e) => {
-            return <TaskItem task={e.item.item} />
+            return <TaskItem task={e.item.item} id={e.item.id} onDelete={deleteTaskHandeler} />
           }}
           keyExtractor={(item, index) => {
             return item.id
@@ -62,15 +94,10 @@ export default function App() {
 const styles = StyleSheet.create({
   appContainer: {
     padding: 70,
-    paddingHorizontal: 20
-
+    paddingHorizontal: 20,
+    flexDirection: "column",
+    flex: 1
   },
-  internalSection: {
-    flexDirection: "row",
-    alignItems: "stretch",
-    justifyContent:"space-between"
-  },
-
   heddingSmall: {
     fontSize: 18,
     color: "gray",
@@ -80,5 +107,24 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     paddingBottom: 10,
     marginBottom: 10
+  },
+  listConteiner: {
+    flex: 10
+  },
+  addbtn:{
+    backgroundColor: "#2563eb",
+  },
+  demobtn:{
+    backgroundColor: "#afb0b1",
+  },
+  btn: {
+    textAlign: "center",
+    padding: 12,
+    backgroundColor: "#2563eb",
+    borderRadius: 8,
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
+    overflow: "hidden",
   }
 })
