@@ -1,20 +1,29 @@
-import { cacheSignal, useState } from 'react';
-import { StyleSheet,ScrollView, Text, TextInput, View, Button } from 'react-native';
+import { useState } from 'react';
+import {
+  StyleSheet,
+  FlatList,
+  Text,
+  TextInput,
+  View,
+  Button
+} from 'react-native';
+import TaskItem from './components/TaskItem.jsx';
+import TakeInput from './components/TakeInput.jsx';
 
 export default function App() {
   const [inputText, setInputText] = useState("")
   const [listTask, setListTask] = useState([])
-  
-  
+
+
   function inputHandeler(text) {
     setInputText(text)
   }
 
   function addTaskHandeler(e) {
 
-    
 
-    setListTask(prv => [...prv, e])
+
+    setListTask(prv => [...prv, { item: e, id: Math.floor(Math.random()).toString() }])
     setInputText(" ")
   }
 
@@ -23,8 +32,7 @@ export default function App() {
 
     <View style={styles.appContainer}>
       <View style={styles.internalSection}>
-        <TextInput
-          style={styles.inputArea}
+        <TakeInput
           placeholder='Enter your task..'
           onChangeText={inputHandeler}
           value={inputText}
@@ -33,15 +41,18 @@ export default function App() {
           addTaskHandeler(inputText)
         }} />
       </View>
-      <View  style={styles.listConteiner}>
-        <ScrollView>
+      <View style={styles.listConteiner}>
         <Text style={styles.heddingSmall}>List of tasks</Text>
-        <View>
-          {listTask.map((elm, idx) => {
-            return <Text key={idx} style={styles.listElement}>{elm}</Text>
-          })}
-        </View>
-      </ScrollView>
+        <FlatList
+          data={listTask}
+          renderItem={(e) => {
+            return <TaskItem task={e.item.item} />
+          }}
+          keyExtractor={(item, index) => {
+            return item.id
+          }}
+        >
+        </FlatList>
       </View>
     </View>
 
@@ -50,23 +61,16 @@ export default function App() {
 
 const styles = StyleSheet.create({
   appContainer: {
-
     padding: 70,
     paddingHorizontal: 20
 
   },
   internalSection: {
     flexDirection: "row",
-    alignItems: "center",
     alignItems: "stretch",
+    justifyContent:"space-between"
   },
-  inputArea: {
-    flex: 1,
-    padding: 10,
-    borderWidth: 1,
-    marginRight: 7,
-    borderRadius: 5
-  },
+
   heddingSmall: {
     fontSize: 18,
     color: "gray",
@@ -76,17 +80,5 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     paddingBottom: 10,
     marginBottom: 10
-  },
-
-  listElement: {
-    margin:8,
-    
-    backgroundColor:"#5900ff",
-    color:"#fff",
-    fontSize: 18,
-    padding: 4,
-    paddingHorizontal: 7,
-    fontWeight: "500",
-    borderRadius:8
   }
 })
